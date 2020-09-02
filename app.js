@@ -18,7 +18,43 @@ var connection = mysql.createConnection({
   });
 
   connection.query = util.promisify(connection.query);
+//option variables
+var options= [
+    {"message": "What would you like to do" ,name:"options",type:"list", choices:["View All Employees",
+    "View All Employees by Department",
+    "View All Employees by Role",
+    "Add Employee",
+    "Remove Employee",
+    "Update Employee Role",
+    "Update Employee Manager" ]}
+]  
+//Employee info variable
+var employeeInfo = [
+    {"message": "What is the employee's first name? ",name:"first_name"},
+    {"message":"What is the employee's last name?",name:"last_name"},
+    {"message":"What is the employee's role?",name:"role_id"},
+    {"message":"Who is the employee's Manager", name:"manager_id"}
+]
+//First Prompt
+chooseOption()
+function chooseOption() {
+inquirer.prompt(options)
+.then(function(response){
+    if (response.options == "View All Employees"){
+    showEmployees()
+}
+    if (response.options == "Add Employee"){
+        addEmployees()
+    }
+    
 
+})
+
+}
+
+
+
+  
   const orm = {
       getAll(table){
           return connection.query(`select * from ${table}`)
@@ -27,7 +63,26 @@ var connection = mysql.createConnection({
           return connection.query(`INSERT INTO ${table} SET ?`, obj)
       }
   }
-orm.addOne("employee", {first_name: "Dustin", last_name: "Scroggins", role_id:3, manager_id: null})
+// orm.addOne("employee", {first_name: "Dustin", last_name: "Scroggins", role_id:3, manager_id: null})
 
-  orm.getAll("employee")
+function showEmployees(){ orm.getAll("employee")
   .then(data=> console.table(data));
+  
+
+}
+
+function employeesByDepartment(){
+
+}
+function employeesByManager(){
+
+}
+function addEmployees(){
+    inquirer.prompt(employeeInfo)
+    .then(function(data){
+        console.log(data)
+
+    })
+}
+
+
