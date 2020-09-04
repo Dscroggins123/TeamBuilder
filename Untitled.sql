@@ -32,4 +32,20 @@ CREATE TABLE employee (
     CONSTRAINT fk_manager FOREIGN KEY(manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
 
-select * from employee;
+
+
+SELECT 
+    employee.first_name, 
+    employee.last_name, 
+    role.title,
+    role.salary,
+    department.name
+    
+    status
+FROM
+    employee
+LEFT JOIN role ON 
+    role.id = employee.role_id
+LEFT JOIN department ON 
+    department.id = employee.role_id;
+    
